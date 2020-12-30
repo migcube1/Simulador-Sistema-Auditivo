@@ -1,0 +1,5 @@
+﻿  brain.cpp
+d:\fi\comgrafica\proyecto_brains_model\projecto_opengl\projecto_opengl\window.h(12): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+d:\fi\comgrafica\proyecto_brains_model\projecto_opengl\projecto_opengl\window.h(13): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+d:\fi\comgrafica\proyecto_brains_model\projecto_opengl\projecto_opengl\brain.cpp(356): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Projecto_OpenGL.vcxproj -> D:\FI\ComGrafica\Proyecto_Brains_Model\Projecto_OpenGL\Debug\Projecto_OpenGL.exe
