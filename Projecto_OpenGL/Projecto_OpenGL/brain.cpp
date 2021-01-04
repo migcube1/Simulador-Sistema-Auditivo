@@ -55,6 +55,7 @@ Camera camera;
 
 // Delaración de las Texturas
 Texture plainTexture;
+Texture pielTexture;
 
 //Declaración de materiales
 Material Material_brillante;
@@ -68,7 +69,9 @@ PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 //Declaración de modelos
-Model celulas;
+Model celula;
+Model oreja;
+Model cerebro;
 
 //Declaración del skybox
 Skybox skybox;
@@ -76,6 +79,8 @@ Skybox skybox;
 //Declaración de la variables de tiempo
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
+
+
 
 // Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -281,14 +286,26 @@ int main()
 	/*------------------------------------TEXTURAS-------------------------------------------*/
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
+	
+	pielTexture = Texture("Textures/piel.png");
+	pielTexture.LoadTextureA();
 
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
 	/*------------------------------------MODELOS--------------------------------------------*/
 
-	celulas = Model();
-	celulas.LoadModel("Models/celulas.obj");
+	celula = Model();
+	celula.LoadModel("Models/celula.obj");
+
+	oreja = Model();
+	//oreja.LoadModel("Models/oreja.obj");
+	
+	cerebro = Model();
+	//cerebro.LoadModel("Models/cerebro.obj");
+
+
+
 
 	/*---------------------------------------LUCES--------------------------------------------*/
 
@@ -301,13 +318,23 @@ int main()
 	unsigned int pointLightCount = 0;
 
 	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-								0.0f, 1.0f,
-								2.0f, 1.5f,1.5f,
-								0.3f, 0.2f, 0.1f);
-	pointLightCount++;
+	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
+	//							0.0f, 1.0f,
+	//							2.0f, 1.5f,1.5f,
+	//							0.3f, 0.2f, 0.1f);
+	//pointLightCount++;
 	
 	unsigned int spotLightCount = 0;
+
+	//luz fija
+	/*spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f,
+		0.0f, 2.0f,
+		10.0f, 0.0f, 0.0f,
+		0.0f, -5.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		10.0f);
+	spotLightCount++;*/
+
 	//linterna
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
 		0.0f, 2.0f,
@@ -317,22 +344,20 @@ int main()
 		20.0f);
 	spotLightCount++;
 
-	//luz fija
-	spotLights[1] = SpotLight(0.0f, 0.0f, 1.0f,
-		0.0f, 2.0f,
-		10.0f, 0.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		10.0f);
-	spotLightCount++;
-	//luz de faro
-	 //luz de helicóptero
-	
+
 	/*---------------------------------------SKYBOX--------------------------------------------*/
 
 	glm::vec3 posblackhawk = glm::vec3(2.0f, 0.0f, 0.0f);
 
 	std::vector<std::string> skyboxFaces;
+
+	/*skyboxFaces.push_back("Textures/Skybox/neurona_rt.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_lf.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_dn.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_up.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_bk.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_ft.tga");*/
+
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_dn.tga");
@@ -349,6 +374,36 @@ int main()
 	
 	movCoche = 0.0f;
 	movOffset = 0.5f;
+
+	/*---------------------------------------POSICIONES OBJETOS --------------------------------------------*/
+
+	glm::vec3 posCelulas[]{
+		glm::vec3(-5.0f, -2.0f, 2.0f),
+		glm::vec3(-3.0f, -2.0f, 3.0f),
+		glm::vec3(-2.0f, -2.0f, 1.0f),
+		glm::vec3(-3.0f, -2.0f, -2.0f),
+		glm::vec3(-4.0f, -2.0f, -4.0f),
+		glm::vec3(-1.0f, -2.0f, -3.0f),
+		glm::vec3(-2.0f, -2.0f, -5.0f),
+		glm::vec3(1.0f, -2.0f, -2.0f),
+		glm::vec3(2.0f, -2.0f, -4.0f),
+		glm::vec3(4.0f, -2.0f, -4.0f),
+		glm::vec3(6.0f, -2.0f, -2.0f),
+		glm::vec3(4.0f, -2.0f, -4.0f),
+		glm::vec3(2.0f, -2.0f, 2.0f),
+		glm::vec3(4.0f, -2.0f, 4.0f),
+		glm::vec3(5.0f, -2.0f, 1.0f),
+		glm::vec3(6.0f, -2.0f, 3.0f),
+		glm::vec3(-6.0f, -2.0f, -3.0f),
+		glm::vec3(-5.0f, -2.0f, -1.0f),
+		glm::vec3(0.0f, -2.0f, 2.0f),
+		glm::vec3(1.0f, -2.0f, 4.0f),
+		glm::vec3(5.0f, -2.0f, 5.0f),
+		glm::vec3(3.0f, -2.0f, 0.0f),
+		glm::vec3(4.0f, -2.0f, 2.0f),
+		glm::vec3(0.0f, -2.0f, 0.0f),
+
+	};
 
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -386,10 +441,21 @@ int main()
 		lowerLight.y -= 0.3f;
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
+		
 		//Cargamos la luces al shader
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
-		shaderList[0].SetSpotLights(spotLights, spotLightCount);
+		//shaderList[0].SetSpotLights(spotLights, spotLightCount);
+
+		//Pender y apagar la linterna (P)
+		if (mainWindow.getOnOff() == 1.0) {
+			shaderList[0].SetSpotLights(spotLights, spotLightCount);
+		}
+		else {
+			shaderList[0].SetSpotLights(spotLights, spotLightCount - 1);
+		}
+
+
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
@@ -406,18 +472,43 @@ int main()
 		/*---------------------------------------Plano--------------------------------------------*/
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(30.0f, 1.0f,30.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		plainTexture.UseTexture();
+		pielTexture.UseTexture();
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(30.0f, 1.0f, 30.0f));
+
+		/*---------------------------------------Celulas--------------------------------------------*/
+
+		for (unsigned int i = 0; i < 25; i++)
+		{
+			model = glm::mat4(1.0);
+			model = glm::translate(model, posCelulas[i]);
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+			celula.RenderModel();
+		
+		}
+
+		/*---------------------------------------Cerebro--------------------------------------------*/
+		/*model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		celulas.RenderModel();
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		cerebro.RenderModel();*/
+
+		/*---------------------------------------Sistema Auditivo--------------------------------------------*/
+		/*model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		oreja.RenderModel();
+*/
+
 
 
 

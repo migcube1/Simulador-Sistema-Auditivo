@@ -14,6 +14,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
+	OnOff = 1.0f;
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -111,6 +112,15 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	if (key == GLFW_KEY_U)
 	{
 		theWindow-> muevex -= 1.0;
+	}
+
+	//Encender y apagar la luz de la linterna
+	if (action == GLFW_PRESS && key == GLFW_KEY_P && theWindow->OnOff == 1.0)
+	{
+		theWindow->OnOff = 0.0;
+	}
+	else if (action == GLFW_PRESS && key == GLFW_KEY_P && theWindow->OnOff == 0.0) {
+		theWindow->OnOff = 1.0;
 	}
 
 
