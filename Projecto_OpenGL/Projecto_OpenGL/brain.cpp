@@ -351,19 +351,16 @@ int main()
 
 	std::vector<std::string> skyboxFaces;
 
-	/*skyboxFaces.push_back("Textures/Skybox/neurona_rt.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_rt.tga");
 	skyboxFaces.push_back("Textures/Skybox/neurona_lf.tga");
-	skyboxFaces.push_back("Textures/Skybox/neurona_dn.tga");
+	
+	
 	skyboxFaces.push_back("Textures/Skybox/neurona_up.tga");
+	skyboxFaces.push_back("Textures/Skybox/neurona_dn.tga");
+	
+	skyboxFaces.push_back("Textures/Skybox/neurona_ft.tga");
 	skyboxFaces.push_back("Textures/Skybox/neurona_bk.tga");
-	skyboxFaces.push_back("Textures/Skybox/neurona_ft.tga");*/
 
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_ft.tga");
 
 	skybox = Skybox(skyboxFaces);
 
@@ -493,9 +490,9 @@ int main()
 		}
 
 		/*---------------------------------------Cerebro--------------------------------------------*/
-		/*model = glm::mat4(1.0);
+	    /*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		cerebro.RenderModel();*/
@@ -506,8 +503,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		oreja.RenderModel();
-*/
+		oreja.RenderModel();*/
 
 
 
