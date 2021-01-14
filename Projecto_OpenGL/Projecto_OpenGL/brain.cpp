@@ -43,9 +43,8 @@
 #include"SpotLight.h"
 
 const float toRadians = 3.14159265f / 180.0f;
-float movCoche;
-float movOffset;
-bool avanza;
+float rotRadio, rotRadioOffset;
+bool sentidoRadio;
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
@@ -72,6 +71,8 @@ SpotLight spotLights[MAX_SPOT_LIGHTS];
 Model celula;
 Model oreja;
 Model cerebro;
+Model radio;
+Model mesa;
 
 //Declaración del skybox
 Skybox skybox;
@@ -298,10 +299,16 @@ int main()
 	celula = Model();
 	celula.LoadModel("Models/celula.obj");
 
-	oreja = Model();
+	radio = Model();
+	radio.LoadModel("Models/radio.obj");
+
+	mesa = Model();
+	mesa.LoadModel("Models/mesa.obj");
+
+	//oreja = Model();
 	//oreja.LoadModel("Models/oreja.obj");
 	
-	cerebro = Model();
+	//cerebro = Model();
 	//cerebro.LoadModel("Models/cerebro.obj");
 
 
@@ -369,8 +376,7 @@ int main()
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 	
-	movCoche = 0.0f;
-	movOffset = 0.5f;
+	
 
 	/*---------------------------------------POSICIONES OBJETOS --------------------------------------------*/
 
@@ -402,17 +408,24 @@ int main()
 
 	};
 
+	/*---------------------------------------VARIABLES PARA  ANIMACIONES --------------------------------------------*/
+
+	//Radio
+	rotRadio = 0.0f;
+	rotRadioOffset = 30.0f;
+	sentidoRadio = true;
+	float flagRotRadio = 0.0f;
+
+
+
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime; 
 		lastTime = now;
-		if(movCoche < 5.0f)
-			{
-			movCoche += movOffset * deltaTime;
-			}
 
+		
 		//Recibir eventos del usuario
 		glfwPollEvents();
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
@@ -488,6 +501,45 @@ int main()
 			celula.RenderModel();
 		
 		}
+
+
+		/*---------------------------------------Radio--------------------------------------------*/
+
+		//Animación
+		if (sentidoRadio) {
+			if (flagRotRadio > 1.0f) {  sentidoRadio = false; flagRotRadio = 0.0f;}
+			else { flagRotRadio += 1.0f;  rotRadio = 30.0f;}		
+		}
+		else {
+			if (flagRotRadio > 1.0f) { sentidoRadio = true; flagRotRadio = 0.0f; }
+			else { flagRotRadio += 1.0f; rotRadio = -30.0f; }
+		}
+		
+
+		//Modelo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 10.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotRadio * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		radio.RenderModel();
+
+
+		/*---------------------------------------Mesa--------------------------------------------*/
+
+		//Modelo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		mesa.RenderModel();
+
+
+
 
 		/*---------------------------------------Cerebro--------------------------------------------*/
 	    /*model = glm::mat4(1.0);
