@@ -55,6 +55,7 @@ Camera camera;
 // Delaración de las Texturas
 Texture plainTexture;
 Texture pielTexture;
+Texture pisoTexture;
 
 //Declaración de materiales
 Material Material_brillante;
@@ -73,6 +74,9 @@ Model oreja;
 Model cerebro;
 Model radio;
 Model mesa;
+Model cabeza;
+Model onda;
+
 
 //Declaración del skybox
 Skybox skybox;
@@ -291,6 +295,9 @@ int main()
 	pielTexture = Texture("Textures/piel.png");
 	pielTexture.LoadTextureA();
 
+	pisoTexture = Texture("Textures/piso.png");
+	pisoTexture.LoadTextureA();
+
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
@@ -304,6 +311,12 @@ int main()
 
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
+
+	cabeza = Model();
+	cabeza.LoadModel("Models/cabeza.obj");
+
+	onda = Model();
+	onda.LoadModel("Models/onda_sonido.obj");
 
 	//oreja = Model();
 	//oreja.LoadModel("Models/oreja.obj");
@@ -417,10 +430,20 @@ int main()
 	float flagRotRadio = 0.0f;
 
 
+	// Onda de sonido
+	float movOnda = 23.0f;
+	float movOndaY = 2.0f;
+	float movOndaY_ = 2.0f;
+	float movOndaOffset = 0.5f;
+	bool avanza = true;
+
+
 
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+		
+		//Variables para la animación
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime; 
 		lastTime = now;
@@ -480,11 +503,22 @@ int main()
 
 
 		/*---------------------------------------Plano--------------------------------------------*/
+
+		//Celulas
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pielTexture.UseTexture();
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[2]->RenderMesh();
+
+		// Radio y Cabeza
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.0f, -2.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pisoTexture.UseTexture();
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
@@ -518,9 +552,9 @@ int main()
 
 		//Modelo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 10.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(25.0f, 2.5f, 20.0f));
+		model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, rotRadio * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -531,14 +565,129 @@ int main()
 
 		//Modelo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(25.0f, 1.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		mesa.RenderModel();
 
 
+		/*---------------------------------------Cabeza--------------------------------------------*/
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.0f, 2.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		cabeza.RenderModel();
+
+		/*---------------------------------------Onda --------------------------------------------*/
+		//				movCoche += movOffset*deltaTime;
+		/// Animación
+		if (avanza) {
+			if (movOnda > 16.0f) { 
+				movOnda -= movOndaOffset; 
+				movOndaY += movOndaOffset; 
+				movOndaY_ -= movOndaOffset;  
+				avanza = true; 
+			}
+			else { avanza = false; }
+		}
+		else {
+			movOnda = 23.0f;
+			movOndaY = 2.0f;
+			movOndaY_ = 2.0f;
+			avanza = true;
+		}
+
+		///Modelos
+
+		// Movimiento en línea recta
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda + 1.0f, 2.5f, 19.0f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, 2.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda+0.5f, 1.5f, 21.0f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		
+		// Diagonal hacia arriba
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY, 18.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY, 19.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY, 20.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		//Diagonal hacia abajo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY_, 18.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY_, 19.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda, movOndaY_, 20.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
+	
 
 
 		/*---------------------------------------Cerebro--------------------------------------------*/
