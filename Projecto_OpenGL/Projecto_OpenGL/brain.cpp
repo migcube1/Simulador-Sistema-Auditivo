@@ -74,8 +74,9 @@ Model oreja;
 Model cerebro;
 Model radio;
 Model mesa;
-Model cabeza;
+Model humano;
 Model onda;
+Model cabeza;
 
 
 //Declaración del skybox
@@ -312,8 +313,11 @@ int main()
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
 
-	cabeza = Model();
-	cabeza.LoadModel("Models/cabeza.obj");
+	humano = Model();
+	humano.LoadModel("Models/humano.obj");
+
+	/*cabeza = Model();
+	cabeza.LoadModel("Models/cabeza.obj");*/
 
 	onda = Model();
 	onda.LoadModel("Models/onda_sonido.obj");
@@ -573,7 +577,7 @@ int main()
 		mesa.RenderModel();
 
 
-		/*---------------------------------------Cabeza--------------------------------------------*/
+		/*--------------------------------------- HUMANO --------------------------------------------*/
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.0f, 2.0f, 20.0f));
@@ -581,7 +585,17 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		cabeza.RenderModel();
+		humano.RenderModel();
+
+		/*--------------------------------------- CABEZA --------------------------------------------*/
+
+		//model = glm::mat4(1.0);
+		//model = glm::translate(model, glm::vec3(15.0f, 2.0f, 30.0f));
+		//model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		//cabeza.RenderModel();
 
 		/*---------------------------------------Onda --------------------------------------------*/
 		//				movCoche += movOffset*deltaTime;
