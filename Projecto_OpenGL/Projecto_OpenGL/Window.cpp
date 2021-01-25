@@ -14,7 +14,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
-	OnOff = 1.0f;
+	OnOff = 0.0f;
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -37,7 +37,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	//CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Primer ventana", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Sistema Auditivo - CGEIHC 2021", NULL, NULL);
 
 	if (!mainWindow)
 	{

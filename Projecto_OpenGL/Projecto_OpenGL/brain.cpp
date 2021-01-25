@@ -2,7 +2,7 @@
 	UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO
 	FACULTAD DE INGENIERÍA
 	COMPUTACIÓN GRÁFICA E INTERACCIÓN HUMANO-COMPUTADORA
-	PROYECTO FINAL "BRAIN MODEL"
+	PROYECTO FINAL "Sistema Auditivo"
 	SEMESTRE 2021-1
 	ALUMNOS:
 	 - LEYVA BEJARANO MIGUEL ANGEL
@@ -153,27 +153,6 @@ void CreateObjects()
 		10.0f, 0.0f, 10.0f,		10.0f, 10.0f,	0.0f, -1.0f, 0.0f
 	};
 
-	unsigned int vegetacionIndices[] = {
-		0, 1, 2,
-		0, 2, 3,
-		4,5,6,
-		4,6,7
-	};
-
-	GLfloat vegetacionVertices[] = {
-		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.5f, -0.5f, 0.0f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.5f, 0.5f, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-		-0.5f, 0.5f, 0.0f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-
-		0.0f, -0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.5f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, 0.5f,		1.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, -0.5f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-
-
-	};
-
 
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
@@ -189,84 +168,6 @@ void CreateObjects()
 	obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(obj3);
 
-	calcAverageNormals(vegetacionIndices, 12, vegetacionVertices, 64, 8, 5);
-
-	Mesh *obj4 = new Mesh();
-	obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
-	meshList.push_back(obj4);
-
-}
-
-void CrearCubo()
-{
-	unsigned int cubo_indices[] = {
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// right
-		4, 5, 6,
-		6, 7, 4,
-		// back
-		8, 9, 10,
-		10, 11, 8,
-
-		// left
-		12, 13, 14,
-		14, 15, 12,
-		// bottom
-		16, 17, 18,
-		18, 19, 16,
-		// top
-		20, 21, 22,
-		22, 23, 20,
-	};
-	//Ejercicio 1: reemplazar con sus dados de 6 caras texturizados, agregar normales
-// average normals
-	GLfloat cubo_vertices[] = {
-		// front
-		//x		y		z		S		T			NX		NY		NZ
-		-0.5f, -0.5f,  0.5f,	0.27f,  0.35f,		0.0f,	0.0f,	-1.0f,	//0
-		0.5f, -0.5f,  0.5f,		0.48f,	0.35f,		0.0f,	0.0f,	-1.0f,	//1
-		0.5f,  0.5f,  0.5f,		0.48f,	0.64f,		0.0f,	0.0f,	-1.0f,	//2
-		-0.5f,  0.5f,  0.5f,	0.27f,	0.64f,		0.0f,	0.0f,	-1.0f,	//3
-		// right
-		//x		y		z		S		T
-		0.5f, -0.5f,  0.5f,	    0.52f,  0.35f,		-1.0f,	0.0f,	0.0f,
-		0.5f, -0.5f,  -0.5f,	0.73f,	0.35f,		-1.0f,	0.0f,	0.0f,
-		0.5f,  0.5f,  -0.5f,	0.73f,	0.64f,		-1.0f,	0.0f,	0.0f,
-		0.5f,  0.5f,  0.5f,	    0.52f,	0.64f,		-1.0f,	0.0f,	0.0f,
-		// back
-		-0.5f, -0.5f, -0.5f,	0.77f,	0.35f,		0.0f,	0.0f,	1.0f,
-		0.5f, -0.5f, -0.5f,		0.98f,	0.35f,		0.0f,	0.0f,	1.0f,
-		0.5f,  0.5f, -0.5f,		0.98f,	0.64f,		0.0f,	0.0f,	1.0f,
-		-0.5f,  0.5f, -0.5f,	0.77f,	0.64f,		0.0f,	0.0f,	1.0f,
-
-		// left
-		//x		y		z		S		T
-		-0.5f, -0.5f,  -0.5f,	0.0f,	0.35f,		1.0f,	0.0f,	0.0f,
-		-0.5f, -0.5f,  0.5f,	0.23f,  0.35f,		1.0f,	0.0f,	0.0f,
-		-0.5f,  0.5f,  0.5f,	0.23f,	0.64f,		1.0f,	0.0f,	0.0f,
-		-0.5f,  0.5f,  -0.5f,	0.0f,	0.64f,		1.0f,	0.0f,	0.0f,
-
-		// bottom
-		//x		y		z		S		T
-		-0.5f, -0.5f,  0.5f,	0.27f,	0.02f,		0.0f,	1.0f,	0.0f,
-		0.5f,  -0.5f,  0.5f,	0.48f,  0.02f,		0.0f,	1.0f,	0.0f,
-		 0.5f,  -0.5f,  -0.5f,	0.48f,	0.31f,		0.0f,	1.0f,	0.0f,
-		-0.5f, -0.5f,  -0.5f,	0.27f,	0.31f,		0.0f,	1.0f,	0.0f,
-
-		//UP
-		 //x		y		z		S		T
-		 -0.5f, 0.5f,  0.5f,	0.27f,	0.68f,		0.0f,	-1.0f,	0.0f,
-		 0.5f,  0.5f,  0.5f,	0.48f,  0.68f,		0.0f,	-1.0f,	0.0f,
-		  0.5f, 0.5f,  -0.5f,	0.48f,	0.98f,		0.0f,	-1.0f,	0.0f,
-		 -0.5f, 0.5f,  -0.5f,	0.27f,	0.98f,		0.0f,	-1.0f,	0.0f,
-
-	};
-	
-	Mesh *cubo = new Mesh();
-	cubo->CreateMesh(cubo_vertices, cubo_indices, 192, 36);
-	meshList.push_back(cubo);
 
 }
 
@@ -279,11 +180,11 @@ void CreateShaders()
 
 int main() 
 {
-	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
+	mainWindow = Window(1280, 720); // 1280, 1024 or 1024, 768 or 1366, 768
 	mainWindow.Initialise();
 
 	CreateObjects();
-	CrearCubo();
+
 	CreateShaders();
 
 	/*----------------------------POS Y CONFIG DE LA CAMARA----------------------------------*/
@@ -306,9 +207,6 @@ int main()
 
 	/*------------------------------------MODELOS--------------------------------------------*/
 
-	/*celula = Model();
-	celula.LoadModel("Models/celula.obj");*/
-
 	radio = Model();
 	radio.LoadModel("Models/radio.obj");
 
@@ -324,6 +222,7 @@ int main()
 	onda = Model();
 	onda.LoadModel("Models/onda_sonido.obj");
 
+	//Celula
 	pilares = Model();
 	pilares.LoadModel("Models/pilares.obj");
 
@@ -362,11 +261,11 @@ int main()
 
 	//LUZ DEL ILUMINA TABLERO
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,	//Color
-		0.0f, 0.25f,							//Intensity
+		0.0f, 1.0f,							//Intensity
 		0.0f, 200.0f, 0.0f,						//Pos
 		0.0f, -1.0f, 0.0f,						//Dir
 		1.0f, 0.0f, 0.0f,						//con, lin, exp
-		20.0f);									//Edg
+		30.0f);									//Edg
 	spotLightCount++;
 
 	spotLights[1] = SpotLight(1.0f, 1.0f, 0.0f,	//Color AMARILLO
@@ -374,7 +273,7 @@ int main()
 		6.0f, 1.0f, 11.0f,						//Pos
 		0.0f, -1.0f, 0.0f,						//Dir
 		1.0f, 0.0f, 0.0f,						//con, lin, exp
-		15.0f);									//Edg
+		40.0f);									//Edg
 	spotLightCount++;
 
 	//linterna
@@ -389,7 +288,6 @@ int main()
 
 	/*---------------------------------------SKYBOX--------------------------------------------*/
 
-	glm::vec3 posblackhawk = glm::vec3(2.0f, 0.0f, 0.0f);
 
 	std::vector<std::string> skyboxFaces;
 
@@ -512,7 +410,7 @@ int main()
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		//shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
-		spotLights[1].SetPos(posCelulas[1]);
+		spotLights[1].SetPos(posCelulas[0]);
 
 		//Pender y apagar la linterna (P)
 		if (mainWindow.getOnOff() == 1.0) {
@@ -606,11 +504,11 @@ int main()
 
 		//Animación
 		if (sentidoRadio) {
-			if (flagRotRadio > 1.0f) {  sentidoRadio = false; flagRotRadio = 0.0f;}
+			if (flagRotRadio > 3.0f) {  sentidoRadio = false; flagRotRadio = 0.0f;}
 			else { flagRotRadio += 1.0f;  rotRadio = 30.0f;}		
 		}
 		else {
-			if (flagRotRadio > 1.0f) { sentidoRadio = true; flagRotRadio = 0.0f; }
+			if (flagRotRadio > 3.0f) { sentidoRadio = true; flagRotRadio = 0.0f; }
 			else { flagRotRadio += 1.0f; rotRadio = -30.0f; }
 		}
 		
