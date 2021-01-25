@@ -77,6 +77,8 @@ Model mesa;
 Model humano;
 Model onda;
 Model cabeza;
+Model pilares;
+Model base_celula;
 
 
 //Declaración del skybox
@@ -286,8 +288,8 @@ int main()
 
 	/*----------------------------POS Y CONFIG DE LA CAMARA----------------------------------*/
 									//pos					Up
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-
+	camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 0.7f);
+	//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	/*------------------------------------TEXTURAS-------------------------------------------*/
 	plainTexture = Texture("Textures/plain.png");
@@ -304,8 +306,8 @@ int main()
 
 	/*------------------------------------MODELOS--------------------------------------------*/
 
-	celula = Model();
-	celula.LoadModel("Models/celula.obj");
+	/*celula = Model();
+	celula.LoadModel("Models/celula.obj");*/
 
 	radio = Model();
 	radio.LoadModel("Models/radio.obj");
@@ -321,6 +323,12 @@ int main()
 
 	onda = Model();
 	onda.LoadModel("Models/onda_sonido.obj");
+
+	pilares = Model();
+	pilares.LoadModel("Models/pilares.obj");
+
+	base_celula = Model();
+	base_celula.LoadModel("Models/base_celula.obj");
 
 
 	/*---------------------------------------LUCES--------------------------------------------*/
@@ -351,8 +359,26 @@ int main()
 		10.0f);
 	spotLightCount++;*/
 
+
+	//LUZ DEL ILUMINA TABLERO
+	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,	//Color
+		0.0f, 0.25f,							//Intensity
+		0.0f, 200.0f, 0.0f,						//Pos
+		0.0f, -1.0f, 0.0f,						//Dir
+		1.0f, 0.0f, 0.0f,						//con, lin, exp
+		20.0f);									//Edg
+	spotLightCount++;
+
+	spotLights[1] = SpotLight(1.0f, 1.0f, 0.0f,	//Color AMARILLO
+		0.0f, 2.0f,								//Intensity
+		6.0f, 1.0f, 11.0f,						//Pos
+		0.0f, -1.0f, 0.0f,						//Dir
+		1.0f, 0.0f, 0.0f,						//con, lin, exp
+		15.0f);									//Edg
+	spotLightCount++;
+
 	//linterna
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,
 		0.0f, 2.0f,
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
@@ -425,6 +451,11 @@ int main()
 	sentidoRadio = true;
 	float flagRotRadio = 0.0f;
 
+	//Celulas
+	float rotCelulas = 0.0f;
+	float rotCelulasOffset = 20.0f;
+	float sentidoCelulas = true;
+	float flagRotCelulas = 0.0f;
 
 	// Onda de sonido
 	float movOnda = 23.0f;
@@ -465,16 +496,23 @@ int main()
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
+
+		/*-------------------------------------------------------------------------------------------*/
+		/*-------------------------------- CONTROL DE LUCES -----------------------------------------*/
+		/*-------------------------------------------------------------------------------------------*/
+
 		//Asociamos la cámara con la luz de la linterna
 		glm::vec3 lowerLight = camera.getCameraPosition();
 		lowerLight.y -= 0.3f;
-		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
+		spotLights[2].SetFlash(lowerLight, camera.getCameraDirection());
 
 		
 		//Cargamos la luces al shader
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		//shaderList[0].SetSpotLights(spotLights, spotLightCount);
+
+		spotLights[1].SetPos(posCelulas[1]);
 
 		//Pender y apagar la linterna (P)
 		if (mainWindow.getOnOff() == 1.0) {
@@ -530,6 +568,19 @@ int main()
 
 		/*---------------------------------------Celulas--------------------------------------------*/
 
+		//Animación
+		if (sentidoCelulas) {
+			if (flagRotCelulas > 1.0f) { sentidoCelulas = false; flagRotCelulas = 0.0f; }
+			else { flagRotCelulas += 1.0f;  rotCelulas = 20.0f; }
+		}
+		else {
+			if (flagRotCelulas > 1.0f) { sentidoCelulas = true; flagRotCelulas = 0.0f; }
+			else { flagRotCelulas += 1.0f; rotCelulas = -20.0f; }
+		}
+
+
+
+		//Modelo
 		for (unsigned int i = 0; i < 25; i++)
 		{
 			model = glm::mat4(1.0);
@@ -537,7 +588,16 @@ int main()
 			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-			celula.RenderModel();
+			base_celula.RenderModel();
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, posCelulas[i]);
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, rotCelulas * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+			pilares.RenderModel();
 		
 		}
 
