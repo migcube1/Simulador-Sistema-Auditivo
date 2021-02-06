@@ -51,6 +51,7 @@ std::vector<Shader> shaderList;
 
 // Declaración de cámara
 Camera camera;
+Camera camera2;
 
 // Delaración de las Texturas
 Texture plainTexture;
@@ -87,6 +88,9 @@ Skybox skybox;
 //Declaración de la variables de tiempo
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
+
+//Posición onda
+glm::vec3 pos_onda = glm::vec3(3.0f, 2.0f, 20.5f);
 
 
 
@@ -189,8 +193,11 @@ int main()
 
 	/*----------------------------POS Y CONFIG DE LA CAMARA----------------------------------*/
 									//pos					Up
-	camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 0.7f);
-	//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera2 = Camera(pos_onda, glm::vec3(0.0f, 1.0f, .0f), -90.0f, 0.0f, 7.0f, 0.7f);
+
+	//camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 0.7f);
+	//camera2 = Camera(pos_onda, glm::vec3(0.0f, 1.0f, .0f), -90.0f, 0.0f, 7.0f, 0.7f);
 
 	/*------------------------------------TEXTURAS-------------------------------------------*/
 	plainTexture = Texture("Textures/plain.png");
@@ -363,6 +370,11 @@ int main()
 	bool avanza = true;
 
 
+	// Onda de sonido 2
+	float movOnda2 = 3.0f;
+	bool avanza2 = true;
+
+
 
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -376,8 +388,15 @@ int main()
 		
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		// Control de teclado para el cambio de cámara
+		if (mainWindow.getCamaraCanica() == GL_TRUE) {  //Camara de canica Activa
+				camera2.keyControl(mainWindow.getsKeys(), deltaTime);
+				camera2.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		if (mainWindow.getCamaraCanica() == GL_FALSE) { // Camara de tablero activado
+			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -422,8 +441,18 @@ int main()
 
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+		//glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+
+		// Control para el cambio de cámara
+		if (mainWindow.getCamaraCanica() == GL_TRUE) {  //Camara de canica Activa
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera2.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, camera2.getCameraPosition().x, camera2.getCameraPosition().y, camera2.getCameraPosition().z);
+		}
+		if (mainWindow.getCamaraCanica() == GL_FALSE) { // Camara de tablero activa
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		}
 
 		
 		/*-------------------------------------------------------------------------------------------*/
@@ -548,13 +577,37 @@ int main()
 
 		/*--------------------------------------- CABEZA --------------------------------------------*/
 
+		///Modelo cabeza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 20.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 2.0f, 20.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		cabeza.RenderModel();
+
+		/// Animación onda
+		if (avanza2) {
+			if (movOnda2 > 0.0f) {
+				movOnda2 -= movOndaOffset;
+				avanza2 = true;
+			}
+			else { avanza2 = false; }
+		}
+		else {
+			movOnda2 = 3.0f;
+			avanza2 = true;
+		}
+
+		/// Modelo onda
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(movOnda2, 2.0f, 20.5f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		onda.RenderModel();
+
 
 		/*---------------------------------------Onda --------------------------------------------*/
 		//				movCoche += movOffset*deltaTime;
@@ -602,6 +655,8 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		onda.RenderModel();
+
+	
 
 		
 		// Diagonal hacia arriba
