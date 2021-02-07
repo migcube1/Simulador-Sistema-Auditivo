@@ -55,6 +55,7 @@ Camera camera2;
 
 // Delaración de las Texturas
 Texture plainTexture;
+Texture plainBlackTexture;
 Texture pielTexture;
 Texture pisoTexture;
 
@@ -72,7 +73,7 @@ SpotLight spotLights[MAX_SPOT_LIGHTS];
 //Declaración de modelos
 Model celula;
 Model oreja;
-Model cerebro;
+Model sistema_auditivo;
 Model radio;
 Model mesa;
 Model humano;
@@ -184,24 +185,24 @@ void CreateShaders()
 
 int main() 
 {
-	mainWindow = Window(1280, 720); // 1280, 1024 or 1024, 768 or 1366, 768
+	mainWindow = Window(1366, 768); // 1280 x 1024 or  1024 x 768  or 1366 x 768
 	mainWindow.Initialise();
 
 	CreateObjects();
-
 	CreateShaders();
 
 	/*----------------------------POS Y CONFIG DE LA CAMARA----------------------------------*/
 									//pos					Up
-	camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera2 = Camera(pos_onda, glm::vec3(0.0f, 1.0f, .0f), -90.0f, 0.0f, 7.0f, 0.7f);
+	camera = Camera(glm::vec3(15.0f, 2.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 1.0f);
+	camera2 = Camera(pos_onda, glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 0.7f);
 
-	//camera = Camera(glm::vec3(0.0f, 40.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 7.0f, 0.7f);
-	//camera2 = Camera(pos_onda, glm::vec3(0.0f, 1.0f, .0f), -90.0f, 0.0f, 7.0f, 0.7f);
 
 	/*------------------------------------TEXTURAS-------------------------------------------*/
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
+
+	plainBlackTexture = Texture("Textures/plainBlack.png");
+	plainBlackTexture.LoadTextureA();
 	
 	pielTexture = Texture("Textures/piel.png");
 	pielTexture.LoadTextureA();
@@ -229,6 +230,10 @@ int main()
 	onda = Model();
 	onda.LoadModel("Models/onda_sonido.obj");
 
+	//Cerebro
+	sistema_auditivo = Model();
+	sistema_auditivo.LoadModel("Models/cerebro.obj");
+
 	//Celula
 	pilares = Model();
 	pilares.LoadModel("Models/pilares.obj");
@@ -248,23 +253,13 @@ int main()
 	unsigned int pointLightCount = 0;
 
 	//Declaración de primer luz puntual
-	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-	//							0.0f, 1.0f,
-	//							2.0f, 1.5f,1.5f,
-	//							0.3f, 0.2f, 0.1f);
-	//pointLightCount++;
+	pointLights[0] = PointLight(0.0f, 0.0f, 1.0f,  //Color
+								0.0f, 3.0f,			 //Intensity
+								0.0f, 2.0f, 20.3f,	//pos
+								0.3f, 0.2f, 0.1f);  //con, lin, exp
+	pointLightCount++;
 	
 	unsigned int spotLightCount = 0;
-
-	//luz fija
-	/*spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f,
-		0.0f, 2.0f,
-		10.0f, 0.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		10.0f);
-	spotLightCount++;*/
-
 
 	//LUZ DEL ILUMINA TABLERO
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,	//Color
@@ -275,16 +270,8 @@ int main()
 		30.0f);									//Edg
 	spotLightCount++;
 
-	spotLights[1] = SpotLight(1.0f, 1.0f, 0.0f,	//Color AMARILLO
-		0.0f, 2.0f,								//Intensity
-		6.0f, 1.0f, 11.0f,						//Pos
-		0.0f, -1.0f, 0.0f,						//Dir
-		1.0f, 0.0f, 0.0f,						//con, lin, exp
-		40.0f);									//Edg
-	spotLightCount++;
-
 	//linterna
-	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,
 		0.0f, 2.0f,
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
@@ -301,13 +288,11 @@ int main()
 	skyboxFaces.push_back("Textures/Skybox/neurona_rt.tga");
 	skyboxFaces.push_back("Textures/Skybox/neurona_lf.tga");
 	
-	
 	skyboxFaces.push_back("Textures/Skybox/neurona_up.tga");
 	skyboxFaces.push_back("Textures/Skybox/neurona_dn.tga");
 	
 	skyboxFaces.push_back("Textures/Skybox/neurona_ft.tga");
 	skyboxFaces.push_back("Textures/Skybox/neurona_bk.tga");
-
 
 	skybox = Skybox(skyboxFaces);
 
@@ -321,32 +306,33 @@ int main()
 	/*---------------------------------------POSICIONES OBJETOS --------------------------------------------*/
 
 	glm::vec3 posCelulas[]{
-		glm::vec3(-5.0f, -2.0f, 2.0f),
-		glm::vec3(-3.0f, -2.0f, 3.0f),
-		glm::vec3(-2.0f, -2.0f, 1.0f),
-		glm::vec3(-3.0f, -2.0f, -2.0f),
-		glm::vec3(-4.0f, -2.0f, -4.0f),
-		glm::vec3(-1.0f, -2.0f, -3.0f),
-		glm::vec3(-2.0f, -2.0f, -5.0f),
-		glm::vec3(1.0f, -2.0f, -2.0f),
-		glm::vec3(2.0f, -2.0f, -4.0f),
-		glm::vec3(4.0f, -2.0f, -4.0f),
-		glm::vec3(6.0f, -2.0f, -2.0f),
-		glm::vec3(4.0f, -2.0f, -4.0f),
-		glm::vec3(2.0f, -2.0f, 2.0f),
-		glm::vec3(4.0f, -2.0f, 4.0f),
-		glm::vec3(5.0f, -2.0f, 1.0f),
-		glm::vec3(6.0f, -2.0f, 3.0f),
-		glm::vec3(-6.0f, -2.0f, -3.0f),
-		glm::vec3(-5.0f, -2.0f, -1.0f),
-		glm::vec3(0.0f, -2.0f, 2.0f),
-		glm::vec3(1.0f, -2.0f, 4.0f),
-		glm::vec3(5.0f, -2.0f, 5.0f),
-		glm::vec3(3.0f, -2.0f, 0.0f),
-		glm::vec3(4.0f, -2.0f, 2.0f),
-		glm::vec3(0.0f, -2.0f, 0.0f),
+		glm::vec3(15.0f, -2.0f, 2.0f),
+		glm::vec3(17.0f, -2.0f, 3.0f),
+		glm::vec3(18.0f, -2.0f, 1.0f),
+		glm::vec3(17.0f, -2.0f, -2.0f),
+		glm::vec3(16.0f, -2.0f, -4.0f),
+		glm::vec3(19.0f, -2.0f, -3.0f),
+		glm::vec3(18.0f, -2.0f, -5.0f),
+		glm::vec3(21.0f, -2.0f, -2.0f),
+		glm::vec3(22.0f, -2.0f, -4.0f),
+		glm::vec3(24.0f, -2.0f, -4.0f),
+		glm::vec3(26.0f, -2.0f, -2.0f),
+		glm::vec3(24.0f, -2.0f, -4.0f),
+		glm::vec3(22.0f, -2.0f, 2.0f),
+		glm::vec3(24.0f, -2.0f, 4.0f),
+		glm::vec3(25.0f, -2.0f, 1.0f),
+		glm::vec3(26.0f, -2.0f, 3.0f),
+		glm::vec3(14.0f, -2.0f, -3.0f),
+		glm::vec3(15.0f, -2.0f, -1.0f),
+		glm::vec3(20.0f, -2.0f, 2.0f),
+		glm::vec3(21.0f, -2.0f, 4.0f),
+		glm::vec3(25.0f, -2.0f, 5.0f),
+		glm::vec3(23.0f, -2.0f, 0.0f),
+		glm::vec3(24.0f, -2.0f, 2.0f),
+		glm::vec3(20.0f, -2.0f, 0.0f),
 
 	};
+
 
 	/*---------------------------------------VARIABLES PARA  ANIMACIONES --------------------------------------------*/
 
@@ -374,6 +360,10 @@ int main()
 	float movOnda2 = 3.0f;
 	bool avanza2 = true;
 
+	float movLuzOnda = 0.0f;
+	bool avanzaLuzOnda = true;
+
+
 
 
 	//Loop mientras no se cierra la ventana
@@ -390,8 +380,8 @@ int main()
 		glfwPollEvents();
 		// Control de teclado para el cambio de cámara
 		if (mainWindow.getCamaraCanica() == GL_TRUE) {  //Camara de canica Activa
-				camera2.keyControl(mainWindow.getsKeys(), deltaTime);
-				camera2.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+			camera2.keyControl(mainWindow.getsKeys(), deltaTime);
+			camera2.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 		}
 		if (mainWindow.getCamaraCanica() == GL_FALSE) { // Camara de tablero activado
 			camera.keyControl(mainWindow.getsKeys(), deltaTime);
@@ -421,7 +411,7 @@ int main()
 		//Asociamos la cámara con la luz de la linterna
 		glm::vec3 lowerLight = camera.getCameraPosition();
 		lowerLight.y -= 0.3f;
-		spotLights[2].SetFlash(lowerLight, camera.getCameraDirection());
+		spotLights[1].SetFlash(lowerLight, camera.getCameraDirection());
 
 		
 		//Cargamos la luces al shader
@@ -429,7 +419,6 @@ int main()
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		//shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
-		spotLights[1].SetPos(posCelulas[0]);
 
 		//Pender y apagar la linterna (P)
 		if (mainWindow.getOnOff() == 1.0) {
@@ -465,16 +454,16 @@ int main()
 
 		/*---------------------------------------Plano--------------------------------------------*/
 
-		//Celulas
+		//Plano para las Celulas
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(20.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pielTexture.UseTexture();
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		// Radio y Humano
+		// Plano para el Radio y Humano
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(20.0f, -2.0f, 20.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -483,12 +472,30 @@ int main()
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		//Onda de sonido y cabeza
+		//Plano para Onda de sonido y cabeza
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 20.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[2]->RenderMesh();
+
+		//Plano para el sistema auditivo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pielTexture.UseTexture();
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[2]->RenderMesh();
+
+		//Plano para el general
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -2.2f, 0.0f));
+		model = glm::scale(model, glm::vec3(30.0f, 1.0f, 30.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		plainBlackTexture.UseTexture();
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
@@ -505,11 +512,10 @@ int main()
 			else { flagRotCelulas += 1.0f; rotCelulas = -20.0f; }
 		}
 
-
-
 		//Modelo
 		for (unsigned int i = 0; i < 25; i++)
 		{
+
 			model = glm::mat4(1.0);
 			model = glm::translate(model, posCelulas[i]);
 			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
@@ -520,11 +526,13 @@ int main()
 			model = glm::mat4(1.0);
 			model = glm::translate(model, posCelulas[i]);
 			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-			model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 			model = glm::rotate(model, rotCelulas * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 			pilares.RenderModel();
+
+			pointLights[0].SetPos(posCelulas[i]);
 		
 		}
 
@@ -555,7 +563,7 @@ int main()
 
 		/*---------------------------------------Mesa--------------------------------------------*/
 
-		//Modelo
+		///Modelo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.0f, 1.0f, 20.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
@@ -567,6 +575,7 @@ int main()
 
 		/*--------------------------------------- HUMANO --------------------------------------------*/
 
+		///Modelo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.0f, 2.0f, 20.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -588,21 +597,23 @@ int main()
 
 		/// Animación onda
 		if (avanza2) {
-			if (movOnda2 > 0.0f) {
+			if (movOnda2 > 0.5f) {
 				movOnda2 -= movOndaOffset;
+				movLuzOnda += movOndaOffset;
 				avanza2 = true;
 			}
 			else { avanza2 = false; }
 		}
 		else {
 			movOnda2 = 3.0f;
+			movLuzOnda = 0.0f;
 			avanza2 = true;
 		}
 
 		/// Modelo onda
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(movOnda2, 2.0f, 20.5f));
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::translate(model, glm::vec3(movOnda2, 2.0f, 20.3f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -610,7 +621,6 @@ int main()
 
 
 		/*---------------------------------------Onda --------------------------------------------*/
-		//				movCoche += movOffset*deltaTime;
 		/// Animación
 		if (avanza) {
 			if (movOnda > 16.0f) { 
@@ -631,7 +641,6 @@ int main()
 		///Modelos
 
 		// Movimiento en línea recta
-
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(movOnda + 1.0f, 2.5f, 19.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -718,24 +727,13 @@ int main()
 	
 
 
-		/*---------------------------------------Cerebro--------------------------------------------*/
-	    /*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		/*-----------------------------------Sistema Auditivo --------------------------------------------*/
+	    model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 10.0f, 10.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		cerebro.RenderModel();*/
-
-		/*---------------------------------------Sistema Auditivo--------------------------------------------*/
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		oreja.RenderModel();*/
-
-
-
+		sistema_auditivo.RenderModel();
 
 
 		glUseProgram(0);
