@@ -71,16 +71,25 @@ PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 //Declaración de modelos
-Model celula;
-Model oreja;
+
+///Modelo Celula
+Model pilares;
+Model base_celula;
+
+///Modelo Sistema Auditivo
 Model sistema_auditivo;
+Model timpano_der;
+Model timpano_izq;
+
+///Modelo Escena 1
 Model radio;
 Model mesa;
 Model humano;
+
+///Modelo Escena 2
 Model onda;
 Model cabeza;
-Model pilares;
-Model base_celula;
+
 
 
 //Declaración del skybox
@@ -92,8 +101,6 @@ GLfloat lastTime = 0.0f;
 
 //Posición onda
 glm::vec3 pos_onda = glm::vec3(3.0f, 2.0f, 20.5f);
-
-
 
 // Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -215,6 +222,7 @@ int main()
 
 	/*------------------------------------MODELOS--------------------------------------------*/
 
+	///Modelos de las primera dos escenas
 	radio = Model();
 	radio.LoadModel("Models/radio.obj");
 
@@ -230,11 +238,17 @@ int main()
 	onda = Model();
 	onda.LoadModel("Models/onda_sonido.obj");
 
-	//Cerebro
+	///Modelo del sistema auditivo
 	sistema_auditivo = Model();
 	sistema_auditivo.LoadModel("Models/cerebro.obj");
 
-	//Celula
+	timpano_der = Model();
+	timpano_der.LoadModel("Models/timpano_der.obj");
+
+	timpano_izq = Model();
+	timpano_izq.LoadModel("Models/timpano_izq.obj");
+
+	/// Modelo de la Celula
 	pilares = Model();
 	pilares.LoadModel("Models/pilares.obj");
 
@@ -336,13 +350,13 @@ int main()
 
 	/*---------------------------------------VARIABLES PARA  ANIMACIONES --------------------------------------------*/
 
-	//Radio
-	rotRadio = 0.0f;
-	rotRadioOffset = 30.0f;
-	sentidoRadio = true;
+	// Radio
+	float rotRadio = 0.0f;
+	float rotRadioOffset = 30.0f;
+	float sentidoRadio = true;
 	float flagRotRadio = 0.0f;
 
-	//Celulas
+	// Celulas
 	float rotCelulas = 0.0f;
 	float rotCelulasOffset = 20.0f;
 	float sentidoCelulas = true;
@@ -355,15 +369,15 @@ int main()
 	float movOndaOffset = 0.5f;
 	bool avanza = true;
 
-
 	// Onda de sonido 2
 	float movOnda2 = 3.0f;
 	bool avanza2 = true;
 
-	float movLuzOnda = 0.0f;
-	bool avanzaLuzOnda = true;
-
-
+	// Timpanos
+	float rotTimpano = 0.0f;
+	float rotTimpanoOffset = 10.0f;
+	float sentidoTimpano = true;
+	float flagRotTimpano = 0.0f;
 
 
 	//Loop mientras no se cierra la ventana
@@ -537,9 +551,9 @@ int main()
 		}
 
 
-		/*---------------------------------------Radio--------------------------------------------*/
+		/*--------------------------------------- RADIO --------------------------------------------*/
 
-		//Animación
+		///Animación
 		if (sentidoRadio) {
 			if (flagRotRadio > 3.0f) {  sentidoRadio = false; flagRotRadio = 0.0f;}
 			else { flagRotRadio += 1.0f;  rotRadio = 30.0f;}		
@@ -550,7 +564,7 @@ int main()
 		}
 		
 
-		//Modelo
+		///Modelo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.0f, 2.5f, 20.0f));
 		model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
@@ -561,7 +575,7 @@ int main()
 		radio.RenderModel();
 
 
-		/*---------------------------------------Mesa--------------------------------------------*/
+		/*--------------------------------------- MESA --------------------------------------------*/
 
 		///Modelo
 		model = glm::mat4(1.0);
@@ -599,14 +613,12 @@ int main()
 		if (avanza2) {
 			if (movOnda2 > 0.5f) {
 				movOnda2 -= movOndaOffset;
-				movLuzOnda += movOndaOffset;
 				avanza2 = true;
 			}
 			else { avanza2 = false; }
 		}
 		else {
 			movOnda2 = 3.0f;
-			movLuzOnda = 0.0f;
 			avanza2 = true;
 		}
 
@@ -664,8 +676,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		onda.RenderModel();
-
-	
 
 		
 		// Diagonal hacia arriba
@@ -728,12 +738,42 @@ int main()
 
 
 		/*-----------------------------------Sistema Auditivo --------------------------------------------*/
-	    model = glm::mat4(1.0);
+	    
+		///Animación timpanos
+		if (sentidoTimpano) {
+			if (flagRotTimpano > 1.0f) { sentidoTimpano = false; flagRotTimpano = 0.0f; }
+			else { flagRotTimpano += 0.07f;  rotTimpano = 0.8f; }
+		}
+		else {
+			if (flagRotTimpano > 1.0f) { sentidoTimpano = true; flagRotTimpano = 0.0f; }
+			else { flagRotTimpano += 0.07f; rotTimpano = -0.8f; }
+		}
+
+		///Sistema auditivo sin timpano
+		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(10.0f, 10.0f, 10.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		sistema_auditivo.RenderModel();
+
+		///Timpano derecho
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 10.0f, 10.0f));
+		model = glm::rotate(model, rotTimpano * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		timpano_der.RenderModel();
+
+		///Timpano izquierdo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 10.0f, 10.0f));
+		model = glm::rotate(model, rotTimpano * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		timpano_izq.RenderModel();
 
 
 		glUseProgram(0);

@@ -1,5 +1,5 @@
 # Blender MTL File: 'cabeza.blend'
-# Material Count: 19
+# Material Count: 15
 
 newmtl Material.003
 Ns 225.000000
@@ -45,31 +45,6 @@ d 1.000000
 illum 2
 map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\carne.png
 
-newmtl Material.009
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Bump Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Clay002_2K_Normal.jpg
-map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainPurple.png
-
-newmtl Material.010
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Bump -bm 1.400000 Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Plaster002_2K_Normal.jpg
-map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainYellow.png
-map_Ns Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Plaster002_2K_Roughness.jpg
-
 newmtl Material.014
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
@@ -91,31 +66,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\carne.png
-
-newmtl Material.021
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Bump Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Clay002_2K_Normal.jpg
-map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainPurple.png
-
-newmtl Material.025
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Bump -bm 1.400000 Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Plaster002_2K_Normal.jpg
-map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainYellow.png
-map_Ns Documents\\ComputacionGrafica\\Proyecto\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Plaster002_2K_Roughness.jpg
 
 newmtl Material.026
 Ns 225.000000
