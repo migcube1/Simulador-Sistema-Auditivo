@@ -1,0 +1,121 @@
+# Blender MTL File: 'humanoCompleto.blend'
+# Material Count: 11
+
+newmtl Material
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.981611 1.000000 0.906752
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.981611 1.000000 0.906752
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.002
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.982251 0.723055 0.590619
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.002 Base Color.png
+
+newmtl Material.003
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.982251 0.723055 0.590619
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.002 Base Color.png
+
+newmtl Material.005
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.005 Base Color.png
+
+newmtl Material.006
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainBlack.png
+
+newmtl Material.009
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\plainBlack.png
+
+newmtl Material.013
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.013 Base Color.png
+
+newmtl Material.016
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.095923 0.024784 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.016 Base Color.png
+
+newmtl Material.ojo
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.ojo BaseColor.jpg
+
+newmtl Material.ojo.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\FI\\ComGrafica\\Proyecto_Brains_Model\\Projecto_OpenGL\\Projecto_OpenGL\\Textures\\Material.ojo BaseColor.jpg
