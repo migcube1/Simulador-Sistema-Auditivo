@@ -60,7 +60,7 @@ algunas subcarpetas, cuyo contenido se describe a continuación:
 
  7. Prepará e inicia la instalación de la aplicación.
 
- 8. Terminada la instalación,  dar clic en "Terminar". 
+ 8. Terminada la instalación,  dar clic en "Finalizar". 
 
  9. Ejecutar la aplicación desde el acceso directo "Sistema Auditivo v1.0", creado 
    en el escritorio.
