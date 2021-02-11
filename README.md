@@ -4,12 +4,12 @@ Proyecto Final "Sistema Auditivo"
 Computación Gráfica e Interacción Humano-Computadora
 Semestre 2021-1
 
-_Sistema gráfico interactivo que ejemplifique la aplicación del pipeline gráfico.Proyecto en el que se presenta un recorrido virtual para ilustrar la organización  tonotópica del cerebro. El tema elegido fue basado en el interés de los integrantes  del equipo por las aplicaciones del cómputo gráfico en el área médica y sus  beneficios.
+Sistema gráfico interactivo que ejemplifique la aplicación del pipeline gráfico.Proyecto en el que se presenta un recorrido virtual para ilustrar la organización  tonotópica del cerebro. El tema elegido fue basado en el interés de los integrantes  del equipo por las aplicaciones del cómputo gráfico en el área médica y sus  beneficios.
 
 
 ### Contenido 📋
 
-_Este proyecto contiene todos los archivos necesarios para  el funcionamiento de la  aplicación. Una vez  instalado en su computadora, la aplicación va acompañada de  algunas subcarpetas, cuyo contenido se describe a continuación:
+Este proyecto contiene todos los archivos necesarios para  el funcionamiento de la  aplicación. Una vez  instalado en su computadora, la aplicación va acompañada de  algunas subcarpetas, cuyo contenido se describe a continuación:
 
 + Models/
 
@@ -52,12 +52,12 @@ _Este proyecto contiene todos los archivos necesarios para  el funcionamiento de
 A continucación se muestra una tabla de las teclas asociadas a los eventos/movimientos
 dentro del proyecto.
 
-W	-	DESPLAZAMIENTO HACIA ADELANTE
-A	-	DESPLAZAMIENTO HACIA LA IZQUIERDA
-D	-	DESPLAZAMIENTO HACIA LA DERECHA
-S	- DESPLAZAMIENTO HACIA ATRÁS
-Q - CAMBIO DE CÁMARA
-P - ENCENDER Y APAGAR LUZ DE CÁMARA
+* W	-	DESPLAZAMIENTO HACIA ADELANTE
+* A	-	DESPLAZAMIENTO HACIA LA IZQUIERDA
+* D	-	DESPLAZAMIENTO HACIA LA DERECHA
+* S	-       DESPLAZAMIENTO HACIA ATRÁS
+* Q     -       CAMBIO DE CÁMARA
+* P     -       ENCENDER Y APAGAR LUZ DE CÁMARA
 
 ## Construido con 🛠️
 
